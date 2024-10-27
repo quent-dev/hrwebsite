@@ -2,6 +2,7 @@
 
 import { useAuth } from '../../lib/context/auth-context';
 import { redirect } from 'next/navigation';
+import { ProfileForm } from '../../components/profile/profile-form';
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
@@ -15,16 +16,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
-      <div className="bg-white shadow rounded-lg p-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <div className="mt-1">{user.email}</div>
-          </div>
-        </div>
-      </div>
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Profile</h1>
+      <ProfileForm />
     </div>
   );
 }

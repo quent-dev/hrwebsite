@@ -36,17 +36,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white dark:bg-gray-800 rounded-lg shadow">
         <div className="text-center">
-          <h2 className="text-3xl font-bold">Welcome to HR Portal</h2>
-          <p className="mt-2 text-gray-600">Please sign in to continue</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome to HR Portal</h2>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Please sign in to continue</p>
         </div>
 
         <button
           onClick={handleGoogleSignIn}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
         >
           <img 
             src="https://www.google.com/favicon.ico" 

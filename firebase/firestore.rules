@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && getUserData().role == 'admin';
+    }
+    
+    function isManager() {
+      return isAuthenticated() && getUserData().role == 'manager';
+    }
+    
+    function isManagerOf(userId) {
+      return isAuthenticated() && 
+        getUserData().role == 'manager' && 
+        get(/databases/$(database)/documents/users/$(userId)).data.employmentInfo.managerId == request.auth.uid;
+    }
+
+    // Users collection rules
+    match /users/{userId} {
+      // Read rules
+      allow read: if isOwner(userId) || 
+                  isAdmin() || 
+                  isManagerOf(userId);
+      
+      // Create rules - only admins can create new users
+      allow create: if isAdmin() ||
+                   // Allow creation of own profile during signup
+                   (isAuthenticated() && request.auth.uid == userId);
+      
+      // Update rules
+      allow update: if isOwner(userId) || 
+                   isAdmin() ||
+                   // Managers can only update specific fields for their team members
+                   (isManagerOf(userId) && 
+                    request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['employmentInfo.position', 'employmentInfo.department']));
+      
+      // Delete rules - only admins can delete
+      allow delete: if isAdmin();
+    }
+  }
+}
