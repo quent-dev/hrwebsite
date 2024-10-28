@@ -7,6 +7,7 @@ import { TimeOffRequest } from "../../types/time-off";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
 import { useToast } from "../../../hooks/use-toast";
+import { Notification } from "../../components/ui/notification";
 
 export function ManagerTimeOffRequests() {
   const { userProfile } = useAuth();
@@ -31,10 +32,7 @@ export function ManagerTimeOffRequests() {
     try {
       await updateTimeOffStatus(requestId, 'approved', userProfile.uid);
       setRequests((prev) => prev.filter((req) => req.id !== requestId));
-      toast({
-        title: "Request Approved",
-        description: "The time off request has been approved.",
-      });
+      <Notification title="Request Approved" description="The time off request has been approved." />;
     } catch (error) {
       toast({
         title: "Error",
@@ -49,10 +47,7 @@ export function ManagerTimeOffRequests() {
     try {
       await updateTimeOffStatus(requestId, 'rejected', userProfile.uid);
       setRequests((prev) => prev.filter((req) => req.id !== requestId));
-      toast({
-        title: "Request Rejected",
-        description: "The time off request has been rejected.",
-      });
+      <Notification title="Request Rejected" description="The time off request has been rejected." />;
     } catch (error) {
       toast({
         title: "Error",
