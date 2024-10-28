@@ -49,6 +49,14 @@ service cloud.firestore {
 
     // Users collection rules
     match /users/{userId} {
+        // Add list/query permissions
+      allow list: if isAuthenticated() && (
+        // Managers can query users (they'll filter for their team in the application code)
+        isManager() ||
+        // Admins can query all users
+        isAdmin()
+      );
+      
       // Read rules
       allow read: if isOwner(userId) || 
                   isAdmin() || 
@@ -73,6 +81,18 @@ service cloud.firestore {
 
     // Time off requests collection rules
     match /timeOffRequests/{requestId} {
+        // Add list/query permissions
+      allow list: if isAuthenticated() && (
+        // Users can query their own requests
+        request.query.filters.size() == 0 ||
+        (request.query.filters.size() == 1 && 
+         'userId' in request.query.filters && 
+         request.query.filters.userId == request.auth.uid) ||
+        // Managers can query their team's requests
+        isManager() ||
+        // Admins can query all requests
+        isAdmin()
+      );
       // Read rules
       allow read: if isAuthenticated() && (
         isTimeOffOwner(resource.data) ||
