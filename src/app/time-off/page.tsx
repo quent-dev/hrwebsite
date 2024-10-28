@@ -2,6 +2,7 @@
 
 import { useAuth } from '../../lib/context/auth-context';
 import { redirect } from 'next/navigation';
+import { TimeOffForm } from '../../components/time-off/time-off-form';
 
 export default function TimeOffPage() {
   const { user, loading } = useAuth();
@@ -15,11 +16,9 @@ export default function TimeOffPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Time Off Requests</h1>
-      <div className="bg-white shadow rounded-lg p-6">
-        <p className="text-gray-500">Time off request form coming soon...</p>
-      </div>
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Request Time Off</h1>
+      <TimeOffForm />
     </div>
   );
 }

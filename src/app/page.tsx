@@ -2,18 +2,11 @@
 
 import { useAuth } from '../lib/context/auth-context';
 import { auth } from '../lib/firebase/config';
+import { DashboardLayout } from '../components/dashboard/dashboard-layout';
 import Link from 'next/link';
 
 export default function HomePage() {
   const { user, loading } = useAuth();
-
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
   if (loading) {
     return (
@@ -23,27 +16,22 @@ export default function HomePage() {
     );
   }
 
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">HR Website</h1>
-      {user ? (
-        <div>
-          <p className="mb-4">Welcome, {user.email}</p>
-          <button
-            onClick={handleSignOut}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-          >
-            Sign Out
-          </button>
-        </div>
-      ) : (
-        <Link 
+  if (!user) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold mb-6">Welcome to HR Portal</h1>
+        <p className="text-lg text-muted-foreground mb-8">
+          Please sign in to access your dashboard
+        </p>
+        <Link
           href="/login"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2 rounded-md"
         >
-          Login
+          Sign In
         </Link>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return <DashboardLayout />;
 }

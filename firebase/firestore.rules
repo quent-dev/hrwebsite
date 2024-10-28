@@ -28,6 +28,25 @@ service cloud.firestore {
         get(/databases/$(database)/documents/users/$(userId)).data.employmentInfo.managerId == request.auth.uid;
     }
 
+    // Time off request helper functions
+    function isTimeOffOwner(timeOffData) {
+      return timeOffData.userId == request.auth.uid;
+    }
+
+    function canManageTimeOff(timeOffData) {
+      return isAdmin() || isManagerOf(timeOffData.userId);
+    }
+
+    function isValidTimeOffRequest() {
+      let requestData = request.resource.data;
+      return requestData.startDate is timestamp &&
+             requestData.endDate is timestamp &&
+             requestData.startDate <= requestData.endDate &&
+             requestData.type in ['vacation', 'sick', 'personal', 'extra'] &&
+             requestData.reason is string &&
+             requestData.reason.size() >= 10;
+    }
+
     // Users collection rules
     match /users/{userId} {
       // Read rules
@@ -48,6 +67,38 @@ service cloud.firestore {
                     request.resource.data.diff(resource.data).affectedKeys()
                     .hasOnly(['employmentInfo.position', 'employmentInfo.department']));
       
+      // Delete rules - only admins can delete
+      allow delete: if isAdmin();
+    }
+
+    // Time off requests collection rules
+    match /timeOffRequests/{requestId} {
+      // Read rules
+      allow read: if isAuthenticated() && (
+        isTimeOffOwner(resource.data) ||
+        canManageTimeOff(resource.data) ||
+        isAdmin()
+      );
+
+      // Create rules
+      allow create: if isAuthenticated() && 
+        isTimeOffOwner(request.resource.data) &&
+        isValidTimeOffRequest() &&
+        request.resource.data.status == 'pending' &&
+        request.resource.data.createdAt == request.time &&
+        request.resource.data.updatedAt == request.time;
+
+      // Update rules
+      allow update: if isAuthenticated() && (
+        (isTimeOffOwner(resource.data) &&
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+         request.resource.data.status == 'cancelled') ||
+        (canManageTimeOff(resource.data) &&
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'approvedBy', 'updatedAt']) &&
+         request.resource.data.status in ['approved', 'rejected'] &&
+         request.resource.data.approvedBy == request.auth.uid)
+      );
+
       // Delete rules - only admins can delete
       allow delete: if isAdmin();
     }
