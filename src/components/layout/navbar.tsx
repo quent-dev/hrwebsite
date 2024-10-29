@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '../../lib/context/auth-context';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, CalendarIcon } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 
 export function Navbar() {
@@ -16,6 +16,11 @@ export function Navbar() {
     { label: 'Home', href: '/' },
     { label: 'Profile', href: '/profile' },
     { label: 'Time Off', href: '/time-off' },
+    {
+      label: "Calendar",
+      href: "/calendar",
+      icon: CalendarIcon // Import from lucide-react if using icons
+    }
   ];
 
   if (loading) return null;

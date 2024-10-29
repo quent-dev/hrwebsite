@@ -1,0 +1,45 @@
+/* Import the base styles */
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+/* Style the calendar toolbar */
+.rbc-toolbar {
+  @apply mb-4 gap-2;
+}
+
+.rbc-toolbar button {
+  @apply bg-background text-foreground border border-input hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md;
+}
+
+.rbc-toolbar button.rbc-active {
+  @apply bg-primary text-primary-foreground;
+}
+
+/* Style the calendar itself */
+.rbc-calendar {
+  @apply bg-background text-foreground;
+}
+
+.rbc-event {
+  @apply rounded-md px-2 py-1;
+}
+
+.rbc-today {
+  @apply bg-accent/50;
+}
+
+/* Month view specific styles */
+.rbc-month-view {
+  @apply border border-border rounded-lg;
+}
+
+.rbc-header {
+  @apply p-2 border-b border-border font-semibold;
+}
+
+.rbc-month-row {
+  @apply border-b border-border;
+}
+
+.rbc-day-bg {
+  @apply border-r border-border;
+} 
