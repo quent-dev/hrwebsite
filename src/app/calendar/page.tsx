@@ -34,11 +34,25 @@ interface CalendarEvent {
   request: Record<string, any>
 }
 
+interface TimeOffRequest {
+  id: string
+  userName: string
+  userId: string
+  type: string
+  startDate: Timestamp
+  endDate: Timestamp
+  reason: string
+  status: 'approved' | 'pending' | 'rejected'
+  approvedBy?: string
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
 export default function CalendarPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([])
-  const [selectedEvent, setSelectedEvent] = useState<Record<string, any> | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<TimeOffRequest | null>(null)
   const { user } = useAuth()
-  const [view, setView] = useState(Views.MONTH)
+  const [view, setView] = useState<View>(Views.MONTH)
   const [date, setDate] = useState(new Date())
 
   useEffect(() => {
@@ -122,7 +136,9 @@ export default function CalendarPage() {
   }, [user])
 
   const handleEventSelect = (event: CalendarEvent) => {
-    setSelectedEvent(event.request)
+    console.log('Selected event:', event)
+    console.log('Setting selected event to:', event.request)
+    setSelectedEvent(event.request as TimeOffRequest)
   }
 
   const getEventStyle = (event: CalendarEvent) => {
@@ -145,7 +161,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="h-[80vh] p-4">
+    <div className="h-[80vh] p-4 relative z-0">
       <BigCalendar
         localizer={localizer}
         events={events}
@@ -162,11 +178,13 @@ export default function CalendarPage() {
         })}
         popup
         selectable
+        className="z-0"
       />
       <RequestDetailsDialog
         request={selectedEvent}
         open={!!selectedEvent}
         onOpenChange={(open) => {
+          console.log('Dialog open state changing to:', open)
           if (!open) setSelectedEvent(null)
         }}
       />
