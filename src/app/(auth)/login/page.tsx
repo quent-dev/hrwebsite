@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../../../lib/firebase/config';
 import { useRouter } from 'next/navigation';
+import { signInWithGoogleAndHandlePreregistered } from '../../../lib/firebase/auth';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [mounted, setMounted] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -24,12 +22,13 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithGoogleAndHandlePreregistered();
       console.log('Successfully signed in:', result.user.email);
+      toast.success('Successfully signed in!');
       router.push('/');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google sign-in error:', error);
+      toast.error(error.message || 'Failed to sign in');
     } finally {
       setLoading(false);
     }

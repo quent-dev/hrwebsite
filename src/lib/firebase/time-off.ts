@@ -157,3 +157,16 @@ export async function getTeamTimeOffRequests(
     ...doc.data()
   } as TimeOffRequest));
 }
+
+export async function getAllTimeOffRequests(): Promise<TimeOffRequest[]> {
+  const q = query(
+    collection(db, TIME_OFF_COLLECTION),
+    where('status', 'in', ['pending', 'approved', 'rejected'])
+  );
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  } as TimeOffRequest));
+}
