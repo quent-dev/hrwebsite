@@ -12,32 +12,41 @@ export default function AdminDashboard() {
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
       
       <Tabs defaultValue="users" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[750px]">
-          <TabsTrigger value="users" className="px-8 py-2">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger 
+            value="users"
+            className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+          >
             User Management
           </TabsTrigger>
-          <TabsTrigger value="roles" className="px-8 py-2">
+          <TabsTrigger 
+            value="roles"
+            className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+          >
             Role Assignment
           </TabsTrigger>
-          <TabsTrigger value="reports" className="px-8 py-2">
+          <TabsTrigger 
+            value="reports"
+            className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+          >
             Reports
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="users">
-          <Card className="p-8">
+          <Card className="p-6">
             <UserManagement />
           </Card>
         </TabsContent>
 
         <TabsContent value="roles">
-          <Card className="p-8">
+          <Card className="p-6">
             <RoleAssignment />
           </Card>
         </TabsContent>
 
         <TabsContent value="reports">
-          <Card className="p-8">
+          <Card className="p-6">
             <Reports />
           </Card>
         </TabsContent>

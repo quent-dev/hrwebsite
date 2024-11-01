@@ -90,16 +90,37 @@ export function DashboardLayout() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="requests">Time Off Requests</TabsTrigger>
+        <TabsList className="bg-muted/50 p-1 w-full grid grid-cols-4">
+          <TabsTrigger 
+            value="overview"
+            className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger 
+            value="requests"
+            className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+          >
+            Time Off Requests
+          </TabsTrigger>
           {permissions.canAccessManagerDashboard() && (
-            <TabsTrigger value="team">Team Calendar</TabsTrigger>
+            <TabsTrigger 
+              value="team"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+            >
+              Team Calendar
+            </TabsTrigger>
           )}
           {permissions.canAccessAdminDashboard() && (
-            <TabsTrigger value="admin">Admin Panel</TabsTrigger>
+            <TabsTrigger 
+              value="admin"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm relative"
+            >
+              Admin Panel
+            </TabsTrigger>
           )}
         </TabsList>
+
         <TabsContent value="overview" className="space-y-4">
           <Card>
             <CardHeader>
@@ -112,6 +133,7 @@ export function DashboardLayout() {
             </CardContent>
           </Card>
         </TabsContent>
+
         <TabsContent value="requests" className="space-y-4">
           {permissions.canAccessManagerDashboard() ? (
             <ManagerTimeOffRequests />
@@ -119,6 +141,7 @@ export function DashboardLayout() {
             <TimeOffRequestsList />
           )}
         </TabsContent>
+
         {permissions.canAccessManagerDashboard() && (
           <TabsContent value="team" className="space-y-4">
             <Card>
@@ -133,6 +156,7 @@ export function DashboardLayout() {
             </Card>
           </TabsContent>
         )}
+
         {permissions.canAccessAdminDashboard() && (
           <TabsContent value="admin" className="space-y-4">
             <Card>
