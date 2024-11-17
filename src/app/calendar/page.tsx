@@ -9,6 +9,7 @@ import { useAuth } from '../../lib/context/auth-context'
 import RequestDetailsDialog from './request-details-dialog'
 import './calendar.css'
 import { getUserInfo, getUserRole } from '../../lib/firebase/user'
+import { TimeOffRequest as TimeOffRequestType, TimeOffType } from '@/src/types/time-off'
 
 const locales = {
   'en-US': require('date-fns/locale/en-US'),
@@ -30,23 +31,9 @@ interface CalendarEvent {
   request: Record<string, any>
 }
 
-interface TimeOffRequest {
-  id: string
-  userName: string
-  userId: string
-  type: string
-  startDate: Timestamp
-  endDate: Timestamp
-  reason: string
-  status: 'approved' | 'pending' | 'rejected'
-  approvedBy?: string
-  createdAt: Timestamp
-  updatedAt: Timestamp
-}
-
 export default function CalendarPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([])
-  const [selectedEvent, setSelectedEvent] = useState<TimeOffRequest | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<TimeOffRequestType | null>(null)
   const { user } = useAuth()
   const [view, setView] = useState<View>(Views.MONTH)
   const [date, setDate] = useState(new Date())
@@ -134,7 +121,7 @@ export default function CalendarPage() {
   const handleEventSelect = (event: CalendarEvent) => {
     console.log('Selected event:', event)
     console.log('Setting selected event to:', event.request)
-    setSelectedEvent(event.request as TimeOffRequest)
+    setSelectedEvent(event.request as TimeOffRequestType & { userName: string })
   }
 
   const getEventStyle = (event: CalendarEvent) => {

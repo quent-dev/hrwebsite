@@ -14,4 +14,5 @@ export interface TimeOffRequest {
   approvedBy?: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  userName: string;
 }
