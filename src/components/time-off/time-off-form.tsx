@@ -97,7 +97,10 @@ export function TimeOffForm() {
       };
 
 
-      await createTimeOffRequest(userProfile.uid, timeOffData);
+      await createTimeOffRequest(userProfile.uid, {
+        ...timeOffData,
+        userName: userProfile.displayName || 'Unknown User'
+      });
 
       toast({
         title: "Request submitted",
