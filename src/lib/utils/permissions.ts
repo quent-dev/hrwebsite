@@ -70,6 +70,7 @@ export const Permissions = {
 };
 
 // Helper function to check if a user is manager of another user
+// TODO: Implement proper management hierarchy checks against the database
 function isUserManager(managerId: string, employeeId: string): boolean {
   // This would typically involve a database check
   // For now, we'll rely on the client-side data
