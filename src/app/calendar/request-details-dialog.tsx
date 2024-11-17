@@ -4,16 +4,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { TimeOffRequest } from "@/src/types/time-off"
 
 interface RequestDetailsDialogProps {
-  isOpen: boolean
-  onClose: () => void
   request: TimeOffRequest | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export function RequestDetailsDialog({ isOpen, onClose, request }: RequestDetailsDialogProps) {
+export function RequestDetailsDialog({ request, open, onOpenChange }: RequestDetailsDialogProps) {
   if (!request) return null
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Time Off Request Details</DialogTitle>
@@ -30,13 +30,13 @@ export function RequestDetailsDialog({ isOpen, onClose, request }: RequestDetail
           <div>
             <p className="text-sm font-medium">Dates</p>
             <p className="text-sm text-muted-foreground">
-              {new Date(request.startDate).toLocaleDateString()} - {new Date(request.endDate).toLocaleDateString()}
+              {request.startDate.toDate().toLocaleDateString()} - {request.endDate.toDate().toLocaleDateString()}
             </p>
           </div>
-          {request.notes && (
+          {request.reason && (
             <div>
               <p className="text-sm font-medium">Notes</p>
-              <p className="text-sm text-muted-foreground">{request.notes}</p>
+              <p className="text-sm text-muted-foreground">{request.reason}</p>
             </div>
           )}
         </div>
