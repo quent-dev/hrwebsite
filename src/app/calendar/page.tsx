@@ -2,17 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { Calendar as BigCalendar, dateFnsLocalizer, View, Views } from 'react-big-calendar'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
-import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore'
+import { format, parse, startOfWeek, getDay, addDays } from 'date-fns'
+import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore'
 import { db } from '../../lib/firebase/config'
 import { useAuth } from '../../lib/context/auth-context'
-import RequestDetailsDialog from './request-details-dialog'
+import { RequestDetailsDialog } from './request-details-dialog'
 import './calendar.css'
 import { getUserInfo, getUserRole } from '../../lib/firebase/user'
-import { addDays } from 'date-fns'
 
 const locales = {
   'en-US': require('date-fns/locale/en-US'),
