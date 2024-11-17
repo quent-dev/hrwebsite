@@ -6,7 +6,7 @@ import { format, parse, startOfWeek, getDay, addDays } from 'date-fns'
 import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore'
 import { db } from '../../lib/firebase/config'
 import { useAuth } from '../../lib/context/auth-context'
-import { RequestDetailsDialog } from './request-details-dialog'
+import RequestDetailsDialog from './request-details-dialog'
 import './calendar.css'
 import { getUserInfo, getUserRole } from '../../lib/firebase/user'
 
