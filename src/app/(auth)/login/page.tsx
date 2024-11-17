@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithGoogleAndHandlePreregistered } from '../../../lib/firebase/auth';
 import { toast } from 'sonner';
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [mounted, setMounted] = useState(false);
@@ -47,9 +48,11 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
         >
-          <img 
+          <Image 
             src="https://www.google.com/favicon.ico" 
             alt="Google" 
+            width={20}
+            height={20}
             className="w-5 h-5"
           />
           {loading ? 'Signing in...' : 'Sign in with Google'}
